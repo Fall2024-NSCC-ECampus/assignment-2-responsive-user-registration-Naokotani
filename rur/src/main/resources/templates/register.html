@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<!--/*@thymesVar id="user" type="com.example.rur.User"*/-->
+<form action="#" th:action="@{/register}" th:object="${user}" method="post">
+    <label for="username">Username:</label>
+    <input name="username" type="text" value="" id="username" />
+    <label for="email">Email:</label>
+    <input name="email" type="email" value="" id="email" />
+    <label for="password">Password:</label>
+    <input name="password" type="password" value="" id="password" />
+    <button>Submit</button>
+</form>
+</body>
+</html>
