@@ -17,67 +17,66 @@ public class RegistrationImpl implements Registration {
     }
 
     @Override
-    public ValidationReseult validateUser(String username, String email, String password) {
-        if (!validateEmail(email)) {
-            return new ValidationReseult(String.format("%s is an invalid email", email), false);
-        } else if (!validatePassword(password)) {
-            return new ValidationReseult(("Invalid password"), false);
-        } else if (!validateUsername(username)) {
-            return new ValidationReseult(String.format("%s is an invalid username", username), false);
-        }
+    public ValidationResult validateUser(String username, String email, String password) {
+        ValidationResult validation = validateInput(username, email, password);
 
-        User user = new User(username, email, password);
-
-        ValidationReseult validation = detailsExists(user);
-
-        if(validation.isValid) {
+        if(validation.isEmailValid && validation.isPasswordValid && validation.isUsernameValid) {
+            User user = new User(username, email, password);
+            validation = checkUsernameEmailExists(user.getEmail(), user.getUsername(), validation);
             try{
                 userRepository.save(user);
             } catch (Exception e) {
-                validation.message = "Failed to save user";
                 throw new RuntimeException(e);
             } finally {
-                validation.message = String.format("%s has been registered successfully", username);
+                validation.successMessage = String.format("%s has been registered successfully", username);
             }
         }
-
         return validation;
     }
 
-    private boolean validateEmail(String email) {
-        return Pattern.compile(emailRegex).matcher(email).matches();
-    }
-
-    private boolean validatePassword(String password) {
-        return Pattern.compile(passwordRegex).matcher(password).matches();
-    }
-
-    private boolean validateUsername(String username) {
-        return Pattern.compile(userRegex).matcher(username).matches();
-    }
-
-    private ValidationReseult detailsExists(User user) {
-        ValidationReseult validation = new ValidationReseult("", true);
-        validation = emailExists(user.getEmail(), validation);
-        validation = usernameExists(user.getUsername(), validation);
-        validation.message = validation.message.trim();
+    private ValidationResult validateInput(String username, String email, String password) {
+        ValidationResult validation = new ValidationResult();
+        validateUsername(username, validation);
+        validateEmail(email, validation);
+        validatePassword(password, validation);
         return validation;
     }
 
-    private ValidationReseult emailExists(String email, ValidationReseult validation) {
+    private void validateEmail(String email, ValidationResult validation) {
+        if(!Pattern.compile(emailRegex).matcher(email).matches()) {
+            validation.invalidEmailMessage = String.format("%s is an invalid email.", email);
+            validation.isEmailValid = false;
+        }
+    }
+
+    private void validatePassword(String password, ValidationResult validation) {
+        if(!Pattern.compile(passwordRegex).matcher(password).matches()) {
+           validation.isPasswordValid = false;
+        }
+    }
+
+    private void validateUsername(String username, ValidationResult validation) {
+        if(!Pattern.compile(userRegex).matcher(username).matches()) {
+            validation.invalidUsernameMessage = String.format("%s is an invalid username.", username);
+            validation.isUsernameValid = false;
+        }
+    }
+
+    private ValidationResult checkUsernameEmailExists(String email, String username,
+                                                       ValidationResult validation) {
         Optional<User> user = userRepository.emailExists(email);
         if (user.isPresent()) {
-            validation.message = validation.message.concat("Email already exists");
-            validation.isValid = false;
+            validation.invalidUsernameMessage = "Email already exists";
+            validation.isUserExists = true;
         }
-        return validation;
+        return usernameExists(username, validation);
     }
 
-    private ValidationReseult usernameExists(String username, ValidationReseult validation) {
+    private ValidationResult usernameExists(String username, ValidationResult validation) {
         Optional<User> user = userRepository.usernameExists(username);
         if (user.isPresent()) {
-            validation.message = validation.message.concat(" username already exists");
-            validation.isValid = false;
+            validation.invalidUsernameMessage = "Username already exists";
+            validation.isUserExists = true;
         }
         return validation;
     }

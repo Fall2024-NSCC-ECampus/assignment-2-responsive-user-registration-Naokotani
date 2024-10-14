@@ -18,28 +18,39 @@ class RegistrationImplTest {
         String username = "testytoast";
         String email = "test@test.com";
         String password = "Tedddst12!";
-
-        ValidationReseult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
-
-        System.out.println(validation.message);
-
-        assertEquals("testytoast has been registered successfully", validation.message);
-        assert(validation.isValid);
+        ValidationResult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
+        assertEquals("testytoast has been registered successfully", validation.successMessage);
+        assert(validation.isUsernameValid);
     }
 
     @Test
-    void badEmail() {
+    void noAtEmail() {
         String username = "testytoast";
         String email = "testtest.com";
         String password = "Tedddst12!";
+        ValidationResult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
+        assertEquals("testtest.com is an invalid email.", validation.invalidEmailMessage);
+        assert(!validation.isEmailValid);
+    }
 
-        ValidationReseult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
+    @Test
+    void spacesEmail() {
+        String username = "testytoast";
+        String email = "test@te st.com";
+        String password = "Tedddst12!";
+        ValidationResult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
+        assertEquals("test@te st.com is an invalid email.", validation.invalidEmailMessage);
+        assert(!validation.isEmailValid);
+    }
 
-        System.out.println(validation.message);
-
-        assertEquals("testtest.com is an invalid email", validation.message);
-        assert(!validation.isValid);
-
+    @Test
+    void noDotEmail() {
+        String username = "testytoast";
+        String email = "test@testcom";
+        String password = "Tedddst12!";
+        ValidationResult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
+        assertEquals("test@testcom is an invalid email.", validation.invalidEmailMessage);
+        assert(!validation.isEmailValid);
     }
 
     @Test
@@ -47,27 +58,20 @@ class RegistrationImplTest {
         String username = "tes";
         String email = "test@test.com";
         String password = "Tedddst12!";
-
-        ValidationReseult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
-
-        System.out.println(validation.message);
-
-        assertEquals("tes is an invalid username", validation.message);
-        assert(!validation.isValid);
+        ValidationResult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
+        assertEquals("tes is an invalid username.", validation.invalidUsernameMessage);
+        assert(!validation.isUsernameValid);
 
     }
 
     @Test
     void spacesUsername() {
-        String username = "te s";
+        String username = "te sssasdfd";
         String email = "test@test.com";
         String password = "Tedddst12!";
-
-        ValidationReseult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
-
-        System.out.println(validation.message);
-
-        assert(!validation.isValid);
+        ValidationResult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
+        assertEquals("te sssasdfd is an invalid username.", validation.invalidUsernameMessage);
+        assert(!validation.isUsernameValid);
 
     }
 
@@ -76,13 +80,8 @@ class RegistrationImplTest {
         String username = "testytest";
         String email = "test@test.com";
         String password = "tedddst12!";
-
-        ValidationReseult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
-
-        System.out.println(validation.message);
-
-        assertEquals("Invalid password", validation.message);
-        assert(!validation.isValid);
+        ValidationResult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
+        assert(!validation.isPasswordValid);
 
     }
 
@@ -91,14 +90,8 @@ class RegistrationImplTest {
         String username = "testytest";
         String email = "test@test.com";
         String password = "tedddst!";
-
-        ValidationReseult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
-
-        System.out.println(validation.message);
-
-        assertEquals("Invalid password", validation.message);
-        assert(!validation.isValid);
-
+        ValidationResult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
+        assert(!validation.isPasswordValid);
     }
 
     @Test
@@ -106,13 +99,7 @@ class RegistrationImplTest {
         String username = "testytest";
         String email = "test@test.com";
         String password = "tedddst12";
-
-        ValidationReseult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
-
-        System.out.println(validation.message);
-
-        assertEquals("Invalid password", validation.message);
-        assert(!validation.isValid);
-
+        ValidationResult validation = new RegistrationImpl(userRepository).validateUser(username, email, password);
+        assert(!validation.isPasswordValid);
     }
 }

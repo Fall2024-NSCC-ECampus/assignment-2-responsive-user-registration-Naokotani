@@ -3,6 +3,11 @@
 <head>
     <title>Hello</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .red-text {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <!--/*@thymesVar id="user" type="com.example.rur.User"*/-->
@@ -14,6 +19,11 @@
     <label for="password">Password:</label>
     <input name="password" type="password" value="" id="password" />
     <button>Submit</button>
+    <p th:hidden="${v.isEmailValid}" th:text="${v.invalidEmailMessage}" class="red-text"></p>
+    <p th:hidden="${v.isUsernameValid}" th:text="${v.invalidUsernameMessage}" class="red-text"></p>
+    <p th:hidden="${v.isPasswordValid}" th:text="${v.invalidPasswordMessage}" class="red-text"></p>
+    <p th:hidden="${!v.isUserExists}" th:text="${v.invalidUsernameMessage}" class="red-text"></p>
+    <p th:hidden="${!v.isEmailExists}" th:text="${v.invalidEmailMessage}" class="red-text"></p>
 </form>
 </body>
 </html>
