@@ -56,4 +56,9 @@ public class RegistrationForm {
         return ResponseEntity.ok(userRepository.findAll());
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
 }
