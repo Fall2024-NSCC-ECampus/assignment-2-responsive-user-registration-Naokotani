@@ -1,6 +1,8 @@
 package com.example.rur.service;
 import com.example.rur.model.User;
 import com.example.rur.repository.UserRepository;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -21,7 +23,9 @@ public class RegistrationImpl implements Registration {
         ValidationResult validation = validateInput(username, email, password);
 
         if(validation.isEmailValid && validation.isPasswordValid && validation.isUsernameValid) {
-            User user = new User(username, email, password);
+            PasswordEncoder passwordEncoder =
+                    PasswordEncoderFactories.createDelegatingPasswordEncoder();
+            User user = new User(username, email, passwordEncoder.encode(password));
             validation = checkUsernameEmailExists(user.getEmail(), user.getUsername(), validation);
             try{
                 userRepository.save(user);

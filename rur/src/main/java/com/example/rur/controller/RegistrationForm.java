@@ -5,11 +5,15 @@ import com.example.rur.repository.UserRepository;
 import com.example.rur.service.Registration;
 import com.example.rur.service.RegistrationImpl;
 import com.example.rur.service.ValidationResult;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 public class RegistrationForm {
@@ -44,6 +48,12 @@ public class RegistrationForm {
     @GetMapping("/")
     public String home() {
         return "index";
+    }
+
+    @GetMapping("/users")
+    @ResponseBody
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.ok(userRepository.findAll());
     }
 
 }
