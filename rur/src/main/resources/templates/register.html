@@ -34,11 +34,7 @@
 
     submitButton.disabled = true;
     function validatePassword(){
-        if(password.value !== confirmPassword.value || password.value === "") {
-            submitButton.disabled = true;
-        } else {
-            submitButton.disabled = false;
-        }
+        submitButton.disabled = password.value !== confirmPassword.value || password.value === "";
     }
 
     password.onkeyup = validatePassword;
