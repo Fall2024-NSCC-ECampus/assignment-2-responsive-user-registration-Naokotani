@@ -19,10 +19,10 @@ public class RegistrationImpl implements Registration {
     }
 
     @Override
-    public ValidationResult validateUser(String username, String email, String password) {
-        ValidationResult validation = validateInput(username, email, password);
+    public ValidationResult validateUser(String username, String email, String password, String confirmPassword) {
+        ValidationResult validation = validateInput(username, email, password, confirmPassword);
 
-        if(validation.isEmailValid && validation.isPasswordValid && validation.isUsernameValid) {
+        if(validation.isEmailValid && validation.isPasswordValid && validation.isUsernameValid && validation.passwordsMatch) {
             PasswordEncoder passwordEncoder =
                     PasswordEncoderFactories.createDelegatingPasswordEncoder();
             User user = new User(username, email, passwordEncoder.encode(password));
@@ -38,11 +38,11 @@ public class RegistrationImpl implements Registration {
         return validation;
     }
 
-    private ValidationResult validateInput(String username, String email, String password) {
+    private ValidationResult validateInput(String username, String email, String password, String confirmPassword) {
         ValidationResult validation = new ValidationResult();
         validateUsername(username, validation);
         validateEmail(email, validation);
-        validatePassword(password, validation);
+        validatePassword(password, confirmPassword, validation);
         return validation;
     }
 
@@ -53,7 +53,10 @@ public class RegistrationImpl implements Registration {
         }
     }
 
-    private void validatePassword(String password, ValidationResult validation) {
+    private void validatePassword(String password, String confirmPassword,  ValidationResult validation) {
+        if(!password.equals(confirmPassword)) {
+            validation.passwordsMatch = false;
+        }
         if(!Pattern.compile(passwordRegex).matcher(password).matches()) {
            validation.isPasswordValid = false;
         }

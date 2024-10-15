@@ -1,13 +1,21 @@
 <!DOCTYPE HTML>
-<html lang="">
+<html lang="en">
 <head>
-    <title>Hello</title>
+    <title>So Secret!</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-
-<h1 th:text="${message}"></h1>
-
-<p>Thymeleaf Iteration:</p>
+<h1>Welcome to Super Secret Stuff Website</h1>
+<ul>
+    <li>
+        <a th:href="@{/register}">Register</a>
+    </li>
+    <li>
+        <a th:href="@{/login}">Login</a>
+    </li>
+    <li>
+        <a th:href="@{/secret}">Secret Stuff</a>
+    </li>
+</ul>
 </body>
 </html>
