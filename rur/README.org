@@ -1,0 +1,26 @@
+#+title: Responsive User Registration
+
+This is a simple app demoing a Spring application with user registration, login, sign in/sign out and access control using Spring Security. The application creates views with Thymeleaf and Spring MVC.
+
+By default the application runs on =http://localhost:8080=
+
+* Views
+** Index 
+location: =http://localhost:8080/=
+This is home page giving the user options to Login, Register or see Secret stuff. Without login, Secret stuff with direct the user to the login page.
+** Register
+location: =http://localhost:8080/register=
+Basic registration page. User is prompted to enter a username, email and password. Both passwords must match and be at least 8 characters, have one upper case, one lowercase, one digit and one special character !@#$%. usernames cannot contain spaces and must be 8 characters. emails are validated as well.
+** Secret
+location: =http://localhost:8080/secret=
+This page is inaccessible without authentication. It has some super secret info! and a button to log out.
+** Login
+location: =http://localhost:8080/login=
+Basic login form, also provides the option to register.
+** Users
+location: =http://localhost:8080/users=
+Obviously a big no no in a real app, this endpoint returns a JSON list of all of the currently registered users. It shows how the users are stored including the hashed passwords.
+** Welcome
+location: =http://localhost:8080/welcome=
+Welcome page one users have been registered.
+

@@ -25,7 +25,7 @@ public class LoginController {
 
     @PostMapping("/register")
     public String submitRegistration(@ModelAttribute User user,
-                                     @RequestParam(name="confirm-password") String confirmPassword,
+                                     @RequestParam(name="confirm-passwordy") String confirmPassword,
                                      Model model) {
         Registration registration = new RegistrationImpl(userRepository);
         ValidationResult validationResult = registration.validateUser(user.getUsername(),
@@ -35,7 +35,7 @@ public class LoginController {
             return "register";
         } else {
             model.addAttribute("v", validationResult);
-            return "result";
+            return "welcome";
         }
     }
 
