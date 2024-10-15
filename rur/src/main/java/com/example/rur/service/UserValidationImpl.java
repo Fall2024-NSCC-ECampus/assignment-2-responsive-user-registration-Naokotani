@@ -1,8 +1,6 @@
 package com.example.rur.service;
 import com.example.rur.model.User;
 import com.example.rur.repository.UserRepository;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 import java.util.regex.Pattern;

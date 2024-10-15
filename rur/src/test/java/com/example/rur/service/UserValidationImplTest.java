@@ -1,7 +1,6 @@
 package com.example.rur.service;
 
 import com.example.rur.repository.UserRepository;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
