@@ -1,21 +1,22 @@
 package com.example.rur.service;
 
+import com.example.rur.model.User;
+
 public class ValidationResult {
+    public final User user;
     public boolean isEmailValid;
     public boolean isPasswordValid;
     public boolean isUsernameValid;
     public boolean isUserExists;
     public boolean isEmailExists;
-    public boolean passwordsMatch;
-    public static final String passwordsNotMatchMessage = "Passwords do not match";
     public String invalidEmailMessage = "";
     public static final String invalidPasswordMessage = "Invalid Password: Must contain at least 8 characters," +
             " one upper case adn one special character";
     public String invalidUsernameMessage = "";
     public String successMessage = "";
 
-    public ValidationResult() {
-        this.passwordsMatch = true;
+    public ValidationResult(User user) {
+        this.user = user;
         this.isUsernameValid = true;
         this.isEmailValid = true;
         this.isPasswordValid = true;
@@ -26,7 +27,6 @@ public class ValidationResult {
         return isUsernameValid &&
                 isEmailValid &&
                 isPasswordValid &&
-                passwordsMatch &&
                 !isUserExists &&
                 !isEmailExists;
     }

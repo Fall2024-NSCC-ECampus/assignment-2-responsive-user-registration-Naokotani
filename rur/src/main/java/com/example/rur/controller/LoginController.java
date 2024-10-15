@@ -2,15 +2,12 @@ package com.example.rur.controller;
 
 import com.example.rur.model.User;
 import com.example.rur.repository.UserRepository;
-import com.example.rur.service.Registration;
-import com.example.rur.service.RegistrationImpl;
-import com.example.rur.service.ValidationResult;
+import com.example.rur.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -24,16 +21,16 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String submitRegistration(@ModelAttribute User user,
-                                     @RequestParam(name="confirm-passwordy") String confirmPassword,
-                                     Model model) {
-        Registration registration = new RegistrationImpl(userRepository);
-        ValidationResult validationResult = registration.validateUser(user.getUsername(),
-                user.getEmail(), user.getPassword(), confirmPassword);
+    public String submitRegistration(@ModelAttribute User user, Model model) {
+        UserValidation userValidation = new UserValidationImpl(userRepository);
+        ValidationResult validationResult = userValidation.validateUser(user.getUsername(),
+                user.getEmail(), user.getPassword());
         if(!validationResult.isInputValid()) {
             model.addAttribute("v", validationResult);
             return "register";
         } else {
+            UserRegistration userRegistration = new UserRegistrationImpl(userRepository);
+            userRegistration.registerUser(validationResult);
             model.addAttribute("v", validationResult);
             return "welcome";
         }
@@ -41,7 +38,7 @@ public class LoginController {
 
     @GetMapping("/register")
     public String registrationForm(Model model) {
-        model.addAttribute("v", new ValidationResult());
+        model.addAttribute("v", new ValidationResult(new User()));
         return "register";
     }
 

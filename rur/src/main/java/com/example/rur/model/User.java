@@ -1,6 +1,8 @@
 package com.example.rur.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Table(name="users")
@@ -9,13 +11,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name="email")
+    @Column(name="email", nullable = false, unique = true)
     private String email;
 
-    @Column(name="password")
+    @Column(name="password", nullable = false)
     private String password;
 
     public User() {
@@ -57,5 +59,11 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void encodePassword() {
+        PasswordEncoder passwordEncoder =
+                PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        this.password = passwordEncoder.encode(password);
     }
 }
