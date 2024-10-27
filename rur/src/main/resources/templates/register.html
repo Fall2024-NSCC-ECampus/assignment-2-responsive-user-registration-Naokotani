@@ -8,25 +8,43 @@
             color: red;
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
 <!--/*@thymesVar id="user" type="com.example.rur.User"*/-->
-<form action="#" th:action="@{/register}" th:object="${user}" method="post">
-    <label for="username">Username:</label>
-    <input name="username" type="text" value="" id="username" required/>
-    <label for="email">Email:</label>
-    <input name="email" type="email" value="" id="email" required/>
-    <label for="password">Password:</label>
-    <input name="password" type="password" value="" id="password" />
-    <label for="confirm-password">Confirm Password:</label>
-    <input name="confirm-password" type="password" value="" id="confirm-password" />
-    <button id="submit-registration-form">Submit</button>
-    <p th:hidden="${v.isEmailValid}" th:text="${v.invalidEmailMessage}" class="red-text"></p>
-    <p th:hidden="${v.isUsernameValid}" th:text="${v.invalidUsernameMessage}" class="red-text"></p>
-    <p th:hidden="${v.isPasswordValid}" th:text="${v.invalidPasswordMessage}" class="red-text"></p>
-    <p th:hidden="${!v.isUserExists}" th:text="${v.invalidUsernameMessage}" class="red-text"></p>
-    <p th:hidden="${!v.isEmailExists}" th:text="${v.invalidEmailMessage}" class="red-text"></p>
-</form>
+<main class="container mt-5">
+    <form action="#" th:action="@{/register}" th:object="${user}" method="post">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center">Register</h2>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input name="username" type="text" id="username" class="form-control" required />
+                    <div class="text-danger" th:hidden="${v.isUsernameValid}" th:text="${v.invalidUsernameMessage}"></div>
+                    <div class="text-danger" th:hidden="${!v.isUserExists}" th:text="${v.invalidUsernameMessage}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input name="email" type="email" id="email" class="form-control" required />
+                    <div class="text-danger" th:hidden="${v.isEmailValid}" th:text="${v.invalidEmailMessage}"></div>
+                    <div class="text-danger" th:hidden="${!v.isEmailExists}" th:text="${v.invalidEmailMessage}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input name="password" type="password" id="password" class="form-control" required />
+                    <div class="text-danger" th:hidden="${v.isPasswordValid}" th:text="${v.invalidPasswordMessage}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="confirm-password" class="form-label">Confirm Password:</label>
+                    <input name="confirm-password" type="password" id="confirm-password" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary w-100" id="submit-registration-form">Submit</button>
+            </div>
+        </div>
+    </form>
+</main>
+
 <script>
     const password = document.getElementById("password")
     const confirmPassword = document.getElementById("confirm-password");

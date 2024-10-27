@@ -11,7 +11,6 @@ import java.util.List;
 
 @Controller
 public class PublicController {
-
     final
     UserRepository userRepository;
 
