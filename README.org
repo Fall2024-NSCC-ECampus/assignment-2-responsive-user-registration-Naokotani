@@ -4,6 +4,10 @@ This is a simple app demoing a Spring application with user registration, login,
 
 By default the application runs on =http://localhost:8080=
 
+* Dependencies
+This application uses docker compose to manage the mySQL server. If you have docker and docker compose available on your system, the application should automatically start the docker container and connect to the mySQL server. Alternatively, I have commented out the h2 application properties and dependencies, but the application should still work by using the h2 setup.
+
+
 * Views
 ** Index 
 location: =http://localhost:8080/=
